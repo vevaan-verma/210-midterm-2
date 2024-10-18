@@ -14,6 +14,7 @@ const string FILE_PATH = "names.txt";
 ifstream fin;
 
 /* FUNCTION PROTOTYPES */
+int getPercent();
 void outputLine(DoublyLinkedList line);
 
 class DoublyLinkedList {
@@ -364,21 +365,19 @@ int main() {
 
 		cout << "Time step #" << minute << ":" << endl; // output the current minute
 
-		int percent = rand() % 100 + 1; // generate a random number between 1 and 100
-		cout << percent << endl;
-
 		// assuming the percents are independent of each other...
+		// call getPercent() each time to get a new random number
 
 		// 40% chance of a customer being helped at the beginning of the line (they get removed)
-		if (percent <= 40) {
+		if (line.get_size() > 0 && getPercent() <= 40) { // make sure there is a customer in line so the output is correct
 
-			line.pop_front(); // remove the customer at the front of the line
 			cout << "    Customer is served" << endl; // output the customer being helped
+			line.pop_front(); // remove the customer at the front of the line
 
 		}
 
 		// 60% chance of customer joining end of the line
-		if (percent <= 60) {
+		if (getPercent() <= 60) {
 
 			string name = names[rand() % names.size()]; // generate a random name
 			line.push_back(name); // insert a customer at the end of the line
@@ -387,7 +386,7 @@ int main() {
 		}
 
 		// 20% chance that the last customer in line leaves
-		if (percent <= 20) {
+		if (line.get_size() > 0 && getPercent() <= 20) { // make sure there is a customer in line so the output is correct
 
 			line.pop_back(); // remove the customer at the end of the line
 			cout << "    Last customer exits the rear of the line" << endl;
@@ -395,16 +394,16 @@ int main() {
 		}
 
 		// 10% chance that any customer leaves the line
-		if (percent <= 10) {
+		if (line.get_size() > 0 && getPercent() <= 10) { // make sure there is a customer in line so the output is correct
 
 			int position = rand() % line.get_size(); // generate a random position in the line
 			line.delete_pos(position); // remove the customer at the random position
-			cout << "    Customer leaves the line" << endl; // output the customer leaving the line
+			cout << "    Customer (at the rear) left the line" << endl; // output the customer leaving the line
 
 		}
 
 		// 10% chance that a VIP customer joins the front of the line
-		if (percent <= 10) {
+		if (getPercent() <= 10) {
 
 			string name = names[rand() % names.size()] + " (VIP)"; // generate a random name
 			line.push_front(name); // insert a customer at the front of the line
@@ -419,6 +418,11 @@ int main() {
 	return 0;
 
 }
+
+// getPercent() returns a random number between 1 and 100
+// arguments: none
+// returns: int - a random number between 1 and 100
+int getPercent() { return rand() % 100 + 1; }
 
 // outputLine() outputs the resulting line
 // arguments: DoublyLinkedList line - the line to output
