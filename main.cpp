@@ -360,33 +360,38 @@ int main() {
 	}
 
 	outputLine(line); // output the resulting line
+	outputLine(line); // output the resulting line
 
 	for (int minute = 2; minute <= 20; minute++) { // iterate through each time period except the first period which is dealt with prior to the loop
 
 		cout << "Time step #" << minute << ":" << endl; // output the current minute
 
+		int percent = getPercent();
+
 		// assuming the percents are independent of each other...
-		// call getPercent() each time to get a new random number
 
 		// 40% chance of a customer being helped at the beginning of the line (they get removed)
-		if (line.get_size() > 0 && getPercent() <= 40) { // make sure there is a customer in line so the output is correct
+		if (percent <= 40) { // make sure there is a customer in line so the output is correct
 
 			cout << "    Customer is served" << endl; // output the customer being helped
+			outputLine(line); // output the resulting line after the customer is helped
 			line.pop_front(); // remove the customer at the front of the line
+			outputLine(line); // output the resulting line after the customer is helped
 
 		}
 
 		// 60% chance of customer joining end of the line
-		if (getPercent() <= 60) {
+		if (percent <= 60) {
 
 			string name = names[rand() % names.size()]; // generate a random name
+			cout << name << endl;
 			line.push_back(name); // insert a customer at the end of the line
 			cout << "    " << name << " joins the line" << endl; // output the customer joining the line
 
 		}
 
 		// 20% chance that the last customer in line leaves
-		if (line.get_size() > 0 && getPercent() <= 20) { // make sure there is a customer in line so the output is correct
+		if (percent <= 20) { // make sure there is a customer in line so the output is correct
 
 			line.pop_back(); // remove the customer at the end of the line
 			cout << "    Last customer exits the rear of the line" << endl;
@@ -394,7 +399,7 @@ int main() {
 		}
 
 		// 10% chance that any customer leaves the line
-		if (line.get_size() > 0 && getPercent() <= 10) { // make sure there is a customer in line so the output is correct
+		if (percent <= 10) { // make sure there is a customer in line so the output is correct
 
 			int position = rand() % line.get_size(); // generate a random position in the line
 			line.delete_pos(position); // remove the customer at the random position
@@ -403,7 +408,7 @@ int main() {
 		}
 
 		// 10% chance that a VIP customer joins the front of the line
-		if (getPercent() <= 10) {
+		if (percent <= 10) {
 
 			string name = names[rand() % names.size()] + " (VIP)"; // generate a random name
 			line.push_front(name); // insert a customer at the front of the line
@@ -422,7 +427,7 @@ int main() {
 // getPercent() returns a random number between 1 and 100
 // arguments: none
 // returns: int - a random number between 1 and 100
-int getPercent() { return rand() % 100 + 1; }
+int getPercent() { int yes = rand() % 100 + 1; cout << yes << endl; return yes; }
 
 // outputLine() outputs the resulting line
 // arguments: DoublyLinkedList line - the line to output
