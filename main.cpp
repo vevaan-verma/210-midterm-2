@@ -1,9 +1,16 @@
 // COMSC-210 | Midterm #2 | Vevaan Verma
-#include <iostream>
 using namespace std;
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <string>
 
 /* CONSTANTS */
 const int MIN_NR = 10, MAX_NR = 99, MIN_LS = 5, MAX_LS = 20;
+const string FILE_PATH = "names.txt";
+
+/* GLOBAL VARIABLES */
+ifstream fin;
 
 class DoublyLinkedList {
 
@@ -292,9 +299,39 @@ public:
 	}
 };
 
+// main() is the entry point of the program and simulates a line at a coffee shop
+// arguments: none
+// returns: int - the exit code of the program
 int main() {
 
-	cout << MIN_NR + MIN_LS + MAX_NR + MAX_LS; // dummy statement to avoid compiler warning
+	fin.open(FILE_PATH);
+
+	if (!fin.good()) { // if the file does not exist
+
+		cout << "File " << FILE_PATH << " not found" << endl; // output error message
+		return 1; // return an error code
+
+	}
+
+	vector<string> names; // create a vector to store the names of the customers
+
+	while (!fin.eof()) { // while the file has not reached the end
+
+		string name; // create a string to store the name
+		fin >> name; // read the next name from the file
+		names.push_back(name); // add the name to the vector
+
+	}
+
+	DoublyLinkedList line; // create a new doubly linked list to represent the line
+
+	// deal with the first time period here, so the code is cleaner
+
+
+	for (int minute = 1; minute < 20; minute++) { // iterate through each time period (20 minutes)
+
+	}
+
 	return 0;
 
 }
