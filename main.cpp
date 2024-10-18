@@ -405,7 +405,7 @@ int main() {
 		// 40% chance of a customer being helped at the beginning of the line (they get removed)
 		if (percent <= 40) { // make sure there is a customer in line so the output is correct
 
-			cout << "    Customer is served" << endl; // output the customer being helped
+			cout << "    " << line.get_front_name() << " is served" << endl; // output the customer being helped
 			line.pop_front(); // remove the customer at the front of the line
 
 		}
@@ -423,7 +423,7 @@ int main() {
 		if (percent <= 20) { // make sure there is a customer in line so the output is correct
 
 			line.pop_back(); // remove the customer at the end of the line
-			cout << "    Last customer exits the rear of the line" << endl;
+			cout << "    " << line.get_back_name() << " exits the rear of the line" << endl;
 
 		}
 
@@ -435,7 +435,7 @@ int main() {
 			if (position == 0) continue; // if the position is 0, skip the iteration because there is no customer at the front of the line
 
 			line.delete_pos(position); // remove the customer at the random position
-			cout << "    Customer (at the rear) left the line" << endl; // output the customer leaving the line
+			cout << "    Customer left the line" << endl; // output the customer leaving the line
 
 		}
 
