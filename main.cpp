@@ -15,7 +15,6 @@ ifstream fin;
 
 /* FUNCTION PROTOTYPES */
 int getPercent();
-void outputLine(DoublyLinkedList line);
 
 class DoublyLinkedList {
 
@@ -318,6 +317,38 @@ public:
 		return size;
 
 	}
+
+	// get_front_name() returns the name of the customer at the front of the line
+	// arguments: none
+	// returns: string - the name of the customer at the front of the line
+	string get_front_name() {
+
+		if (!head) {
+
+			cout << "List is empty." << endl;
+			return "";
+
+		}
+
+		return head->data;
+
+	}
+
+	// get_back_name() returns the name of the customer at the back of the line
+	// arguments: none
+	// returns: string - the name of the customer at the back of the line
+	string get_back_name() {
+
+		if (!tail) {
+
+			cout << "List is empty." << endl;
+			return "";
+
+		}
+
+		return tail->data;
+
+	}
 };
 
 // main() is the entry point of the program and simulates a line at a coffee shop
@@ -359,14 +390,15 @@ int main() {
 
 	}
 
-	outputLine(line); // output the resulting line
-	outputLine(line); // output the resulting line
+	// output the resulting line
+	cout << "    Resulting line:" << endl;
+	line.print();
 
 	for (int minute = 2; minute <= 20; minute++) { // iterate through each time period except the first period which is dealt with prior to the loop
 
 		cout << "Time step #" << minute << ":" << endl; // output the current minute
 
-		int percent = getPercent();
+		int percent = rand() % 100 + 1;
 
 		// assuming the percents are independent of each other...
 
@@ -374,9 +406,7 @@ int main() {
 		if (percent <= 40) { // make sure there is a customer in line so the output is correct
 
 			cout << "    Customer is served" << endl; // output the customer being helped
-			outputLine(line); // output the resulting line after the customer is helped
 			line.pop_front(); // remove the customer at the front of the line
-			outputLine(line); // output the resulting line after the customer is helped
 
 		}
 
@@ -384,7 +414,6 @@ int main() {
 		if (percent <= 60) {
 
 			string name = names[rand() % names.size()]; // generate a random name
-			cout << name << endl;
 			line.push_back(name); // insert a customer at the end of the line
 			cout << "    " << name << " joins the line" << endl; // output the customer joining the line
 
@@ -402,6 +431,9 @@ int main() {
 		if (percent <= 10) { // make sure there is a customer in line so the output is correct
 
 			int position = rand() % line.get_size(); // generate a random position in the line
+
+			if (position == 0) continue; // if the position is 0, skip the iteration because there is no customer at the front of the line
+
 			line.delete_pos(position); // remove the customer at the random position
 			cout << "    Customer (at the rear) left the line" << endl; // output the customer leaving the line
 
@@ -416,25 +448,12 @@ int main() {
 
 		}
 
-		outputLine(line); // output the resulting line after each time period
+		// output the resulting line
+		cout << "    Resulting line:" << endl;
+		line.print();
 
 	}
 
 	return 0;
-
-}
-
-// getPercent() returns a random number between 1 and 100
-// arguments: none
-// returns: int - a random number between 1 and 100
-int getPercent() { int yes = rand() % 100 + 1; cout << yes << endl; return yes; }
-
-// outputLine() outputs the resulting line
-// arguments: DoublyLinkedList line - the line to output
-// returns: void
-void outputLine(DoublyLinkedList line) {
-
-	cout << "    Resulting line:" << endl;
-	line.print();
 
 }
