@@ -336,29 +336,41 @@ int main() {
 	// deal with the first time period here, so the code is cleaner
 	for (int i = 0; i < 5; i++) { // iterate through the first 5 customers
 
-		string name = names[rand() % names.size()];
-		line.insert_after(name, i); // insert a customer at the end of the line
+		string name = names[rand() % names.size()]; // generate a random name
+		line.push_back(name); // insert a customer at the end of the line
 		cout << "    " << name << " joins the line." << endl; // output the customer joining the line
 
 	}
+
+	outputLine(line); // output the resulting line
 
 	for (int minute = 1; minute < 20; minute++) { // iterate through each time period except the first period which is dealt with prior to the loop
 
 		cout << "Minute " << minute << ": "; // output the current minute
 
-		if (minute % 2 == 0) { // if the minute is even
+		int percent = rand() % 100 + 1; // generate a random number between 1 and 100
 
-			line.pop_front(); // remove the first customer in line
-			line.push_back(names[rand() % names.size()]); // add a new customer to the end of the line
+		// assuming the percents are independent of each other:
 
-		} else { // if the minute is odd
+		// 40% chance of a customer being helped at the beginning of the line (they get removed)
+		if (percent <= 40) {
 
-			line.pop_back(); // remove the last customer in line
-			line.push_front(names[rand() % names.size()]); // add a new customer to the front of the line
+			cout << "Customer is served" << endl; // output the customer being helped
+			line.pop_front(); // remove the customer at the front of the line
 
 		}
 
-		line.print(); // print the line
+		// 60% chance of customer joining end of the line
+		if (percent <= 60) {
+
+			string name = names[rand() % names.size()]; // generate a random name
+			line.push_back(name); // insert a customer at the end of the line
+			cout << "    " << name << " joins the line." << endl; // output the customer joining the line
+
+		}
+
+		outputLine(line); // output the resulting line
+
 	}
 
 	return 0;
