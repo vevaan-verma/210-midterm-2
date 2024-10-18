@@ -271,13 +271,10 @@ public:
 
 		while (current) {
 
-			cout << current->data << " ";
+			cout << "        " << current->data << endl;
 			current = current->next;
 
 		}
-
-		cout << endl;
-
 	}
 
 	void print_reverse() {
@@ -299,6 +296,25 @@ public:
 		}
 
 		cout << endl;
+
+	}
+
+	// get_size() returns the size of the list
+	// arguments: none
+	// returns: int - the size of the list
+	int get_size() {
+
+		Node* current = head; // start at the head of the list
+		int size = 0;
+
+		while (current) { // while the current node exists
+
+			size++; // increment the size
+			current = current->next; // move to the next node
+
+		}
+
+		return size;
 
 	}
 };
@@ -338,25 +354,26 @@ int main() {
 
 		string name = names[rand() % names.size()]; // generate a random name
 		line.push_back(name); // insert a customer at the end of the line
-		cout << "    " << name << " joins the line." << endl; // output the customer joining the line
+		cout << "    " << name << " joins the line" << endl; // output the customer joining the line
 
 	}
 
 	outputLine(line); // output the resulting line
 
-	for (int minute = 1; minute < 20; minute++) { // iterate through each time period except the first period which is dealt with prior to the loop
+	for (int minute = 2; minute <= 20; minute++) { // iterate through each time period except the first period which is dealt with prior to the loop
 
-		cout << "Minute " << minute << ": "; // output the current minute
+		cout << "Time step #" << minute << ":" << endl; // output the current minute
 
 		int percent = rand() % 100 + 1; // generate a random number between 1 and 100
+		cout << percent << endl;
 
-		// assuming the percents are independent of each other:
+		// assuming the percents are independent of each other...
 
 		// 40% chance of a customer being helped at the beginning of the line (they get removed)
 		if (percent <= 40) {
 
-			cout << "Customer is served" << endl; // output the customer being helped
 			line.pop_front(); // remove the customer at the front of the line
+			cout << "    Customer is served" << endl; // output the customer being helped
 
 		}
 
@@ -365,11 +382,37 @@ int main() {
 
 			string name = names[rand() % names.size()]; // generate a random name
 			line.push_back(name); // insert a customer at the end of the line
-			cout << "    " << name << " joins the line." << endl; // output the customer joining the line
+			cout << "    " << name << " joins the line" << endl; // output the customer joining the line
 
 		}
 
-		outputLine(line); // output the resulting line
+		// 20% chance that the last customer in line leaves
+		if (percent <= 20) {
+
+			line.pop_back(); // remove the customer at the end of the line
+			cout << "    Last customer exits the rear of the line" << endl;
+
+		}
+
+		// 10% chance that any customer leaves the line
+		if (percent <= 10) {
+
+			int position = rand() % line.get_size(); // generate a random position in the line
+			line.delete_pos(position); // remove the customer at the random position
+			cout << "    Customer leaves the line" << endl; // output the customer leaving the line
+
+		}
+
+		// 10% chance that a VIP customer joins the front of the line
+		if (percent <= 10) {
+
+			string name = names[rand() % names.size()] + " (VIP)"; // generate a random name
+			line.push_front(name); // insert a customer at the front of the line
+			cout << "    " << name << " joins the front of the line" << endl; // output the customer joining the front of the line
+
+		}
+
+		outputLine(line); // output the resulting line after each time period
 
 	}
 
@@ -382,7 +425,7 @@ int main() {
 // returns: void
 void outputLine(DoublyLinkedList line) {
 
-	cout << "Resulting line:" << endl;
+	cout << "    Resulting line:" << endl;
 	line.print();
 
 }
